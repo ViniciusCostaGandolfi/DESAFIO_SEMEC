@@ -1,0 +1,81 @@
+{% extends 'sales/steps/sale_step_base.html' %}
+{% load humanize %}
+
+{% block step_number %}
+  3
+{% endblock %}
+{% block step_title %}
+  Resumo
+{% endblock %}
+{% block total_steps %}
+  3
+{% endblock %}
+{% block prev_url %}
+  {% url 'sales:sale_step_2_address' %}
+{% endblock %}
+{% block submit_label %}
+  Finalizar Venda
+{% endblock %}
+
+{% block content %}
+  <form method="POST"
+    action="{% if request.session.sale_id %}
+      {% url 'sales:update_sale' sale_id=request.session.sale_id %}
+    {% else %}
+      {% url 'sales:create_sale' %}
+    {% endif %}">
+    {% csrf_token %}
+    {{ block.super }}
+  </form>
+{% endblock %}
+
+{% block step_body %}
+  <p class="text-muted">Confira todos os dados antes de finalizar a venda.</p>
+  <div class="row g-4">
+    <div class="col-md-7">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0">Itens da Venda</h5>
+          <div class="mt-2">
+            <label for="sale_date" class="form-label text-muted small fw-semibold">Data da Venda:</label>
+            <input type="date" id="sale_date" name="sale_date" class="form-control form-control-sm" value="{{ sale_date|date:'Y-m-d' }}" required hx-post="{% url 'sales:update_sale_date_session' %}" hx-trigger="change" hx-swap="none" />
+          </div>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            {% for item in cart_items %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  {{ item.product.name }}<br />
+                  <small class="text-muted">Qtd: {{ item.quantity }} x R$ {{ item.product.price|intcomma }}</small>
+                </div>
+                <span class="fw-bold">R$ {{ item.subtotal|floatformat:2|intcomma }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="card-footer fs-5 d-flex justify-content-between">
+          <strong>Subtotal:</strong>
+          <strong>R$ {{ subtotal|intcomma }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5>Endereço de Entrega</h5>
+        </div>
+        <div class="card-body">
+          <p>
+            <strong>CEP:</strong> {{ address_data.cep }}<br />
+            <strong>Rua:</strong> {{ address_data.street }}, {{ address_data.number|default_if_none:'' }}<br />
+            <strong>Bairro:</strong> {{ address_data.neighborhood }}<br />
+            <strong>Cidade/UF:</strong> {{ address_data.city }}/{{ address_data.state }}<br />
+            <strong>Complemento:</strong> {{ address_data.complement|default_if_none:'N/A' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

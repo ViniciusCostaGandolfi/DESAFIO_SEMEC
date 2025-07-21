@@ -1,0 +1,124 @@
+:root {
+    --bs-primary: #00154f !important;
+    --bs-primary-rgb: 0, 21, 79 !important;
+
+    --bs-secondary: #e76b18 !important;
+    --bs-secondary-rgb: 231, 107, 24 !important;
+
+    --bs-link-color: #00154f !important;
+    --bs-link-color-rgb: 0, 21, 79 !important;
+    --bs-link-hover-color: #000a29 !important;
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-primary:hover {
+    background-color: #000a29;
+    border-color: #000a29;
+}
+
+.btn-secondary {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+}
+
+.btn-secondary:hover {
+    background-color: #c45a11;
+    border-color: #c45a11;
+}
+
+.progress-bar {
+    background-color: var(--bs-secondary);
+}
+
+.input-group .btn {
+    border-color: #ced4da;
+}
+
+.input-group .btn:hover {
+    background-color: #e9ecef;
+}
+
+.form-check {
+    padding-left: 2rem;
+}
+
+.form-check .form-check-input {
+    margin-left: -2rem;
+}
+
+.nav-pills .nav-link.active,
+.list-group-item.active {
+    color: #fff;
+}
+
+.page-item.active .page-link {
+    color: #fff;
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+}
+
+
+.page-link {
+    color: var(--bs-secondary);
+    background-color: transparent;
+    border-color: #dee2e6;
+}
+
+.page-link:hover {
+    color: var(--bs-link-hover-color);
+    background-color: #e9ecef;
+}
+
+.page-item.active .page-link {
+    color: #fff;
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: transparent;
+    border-color: #dee2e6;
+}
+
+.alert-success {
+    --bs-alert-color: #0f5132;
+    --bs-alert-bg: #d1e7dd;
+    --bs-alert-border-color: #badbcc;
+}
+
+.alert-error, .alert-danger {
+    --bs-alert-color: #842029;
+    --bs-alert-bg: #f8d7da;
+    --bs-alert-border-color: #f5c2c7;
+}
+
+.alert-warning {
+    --bs-alert-color: #664d03;
+    --bs-alert-bg: #fff3cd;
+    --bs-alert-border-color: #ffecb5;
+}
+
+.alert-info {
+    --bs-alert-color: #055160;
+    --bs-alert-bg: #cff4fc;
+    --bs-alert-border-color: #b6effb;
+}
+
+
+.login-header .logo {
+    width: 160px;
+    height: auto;
+    background-color: #fdfdfd;
+    padding: 10px;
+    border-radius: 5px;
+    margin-right: 1rem;
+}

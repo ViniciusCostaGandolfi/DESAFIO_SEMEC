@@ -1,0 +1,69 @@
+{% load humanize %}
+
+<div class="card">
+  <div class="card-header">
+    <h4>2. Itens da Venda</h4>
+  </div>
+  <div class="card-body">
+    <p class="text-muted">Confira os produtos adicionados.</p>
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th class="text-center">Preço</th>
+          <th class="text-center">Qtd.</th>
+          <th class="text-center">Ação</th>
+        </tr>
+      </thead>
+      <tbody id="sale-items-table">
+        {% for item in cart_items %}
+          <tr id="cart-item-{{ item.product.id }}" class="htmx-indicator-container">
+            <td>
+              {{ item.product.name }}
+              <br />
+              <small class="text-muted">
+                Fornecedores:{% for supplier in item.product.suppliers.all %}
+                  {{ supplier.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                  N/A
+                {% endfor %}
+              </small>
+            </td>
+            <td class="text-center">R$ {{ item.product.price|intcomma }}</td>
+
+            <td class="text-center" style="min-width: 120px;">
+              <div class="input-group input-group-sm mx-auto" style="width: 100px;">
+                <button class="btn btn-outline-secondary" type="button" hx-post="{% url 'sales:decrease_quantity' item.product.id %}" hx-indicator="#cart-item-{{ item.product.id }}">-</button>
+
+                <span class="form-control text-center">{{ item.quantity }}</span>
+
+                <button class="btn btn-outline-secondary" type="button" hx-post="{% url 'sales:increase_quantity' item.product.id %}" hx-indicator="#cart-item-{{ item.product.id }}">+</button>
+              </div>
+            </td>
+            <td class="text-center">
+              <button type="button" class="btn btn-sm btn-outline-danger" hx-post="{% url 'sales:remove_item' item.product.id %}" hx-confirm="Tem certeza que deseja remover este item?" hx-indicator="#cart-item-{{ item.product.id }}"><i class="bi bi-trash3-fill"></i> Excluir</button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div id="cart-summary-footer" class="card-footer">
+    {% for item in cart_items %}
+      <div class="d-flex justify-content-between align-items-center small text-muted">
+        <span>{{ item.product.name }} (x{{ item.quantity }})</span>
+
+      <span>R$ {{ item.subtotal|floatformat:2|intcomma }}</span>
+      </div>
+    {% endfor %}
+
+    {% if cart_items %}
+      <hr class="my-2" />
+    {% endif %}
+
+    <div class="d-flex justify-content-between align-items-center fw-bold">
+      <span>Subtotal</span>
+      <span id="subtotal-summary">R$ {{ subtotal|intcomma }}</span>
+    </div>
+  </div>
+</div>

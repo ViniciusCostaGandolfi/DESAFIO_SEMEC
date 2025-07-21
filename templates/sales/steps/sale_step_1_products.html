@@ -1,0 +1,33 @@
+{% extends 'sales/steps/sale_step_base.html' %}
+{% load bootstrap5 %}
+
+{% block step_number %}1{% endblock %}
+{% block step_title %}Produtos{% endblock %}
+{% block total_steps %}3{% endblock %}
+
+{% block prev_url %}{% endblock %}
+{% block next_url %}{% url 'sales:sale_step_2_address' %}{% endblock %}
+{% block next_label %}Próximo: Endereço{% endblock %}
+
+{% block step_body %}
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header">
+          <h4>Buscar e Adicionar Produtos</h4>
+        </div>
+        <div class="card-body">
+          <div id="product-list-container">
+            {% include 'inventory/partials/product_list.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 d-flex flex-column">
+      <div id="sale-items-panel">
+        {% include 'sales/partials/sale_items_panel.html' %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

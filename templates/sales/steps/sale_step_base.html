@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block title %}
+  {% if edit_sale %}
+    Editar Venda #{{ sale_id }} – Passo {{ step_number }}: {{ step_title }}
+  {% else %}
+    Nova Venda – Passo {{ step_number }}: {{ step_title }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>
+      {% if edit_sale %}
+        Editar Venda #{{ sale_id }} (Passo {{ step_number }} de {{ total_steps }})
+      {% else %}
+        Nova Venda (Passo {{ step_number }} de {{ total_steps }})
+      {% endif %}
+    </h2>
+    <hr/>
+
+    <div id="messages-container"
+         hx-get="{% url 'render_messages' %}"
+         hx-trigger="display-message from:body"
+         hx-swap="innerHTML"></div>
+
+    {% block step_body %}{% endblock %}
+
+    <div class="d-flex justify-content-between mt-4">
+      {% if prev_url %}
+        <a href="{{ prev_url }}" class="btn btn-secondary">Anterior</a>
+      {% else %}
+        <span></span>
+      {% endif %}
+
+      {% if next_url %}
+        <a href="{{ next_url }}" class="btn btn-primary">{{ next_label }}</a>
+      {% else %}
+        <button type="submit" class="btn btn-success">{{ submit_label }}</button>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

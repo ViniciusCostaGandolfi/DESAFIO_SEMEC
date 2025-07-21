@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap5 %}
+
+{% block title %}
+  Login | SEMEQ Vendas
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/users/login.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-lg border-0">
+        <div class="card-body p-4">
+          <div class="text-center mb-4">
+            <h3 class="fw-bold">Portal de Vendas SEMEQ</h3>
+            <p class="text-muted">Acesse sua conta para continuar</p>
+          </div>
+
+          <form id="login-form" method="post" novalidate>
+            {% csrf_token %}
+
+            {% bootstrap_field form.email layout='vertical' %}
+
+            <div class="mb-3">
+              <label for="id_password" class="form-label">Senha</label>
+              <div class="input-group">
+                {{ form.password }}
+                <button class="btn btn-outline-secondary" type="button" id="toggle-password"><i class="bi bi-eye-slash"></i></button>
+              </div>
+            </div>
+
+            {% bootstrap_field form.remember_me layout='vertical' %}
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-secondary btn-lg">
+                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                Entrar
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer text-center py-3 bg-light">
+          <small class="text-muted"><a href="#">Esqueceu sua senha?</a></small>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const passwordInput = document.getElementById('id_password')
+      const togglePasswordButton = document.getElementById('toggle-password')
+      const icon = togglePasswordButton.querySelector('i')
+    
+      togglePasswordButton.addEventListener('click', function () {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password'
+        passwordInput.setAttribute('type', type)
+        icon.classList.toggle('bi-eye-slash')
+        icon.classList.toggle('bi-eye')
+      })
+    
+      const loginForm = document.getElementById('login-form')
+      loginForm.addEventListener('submit', function (e) {
+        const submitButton = e.target.querySelector('button[type="submit"]')
+        const spinner = submitButton.querySelector('.spinner-border')
+    
+        submitButton.disabled = true
+        spinner.classList.remove('d-none')
+      })
+    })
+  </script>
+{% endblock %}

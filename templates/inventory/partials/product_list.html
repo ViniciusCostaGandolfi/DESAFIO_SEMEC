@@ -1,0 +1,143 @@
+{% load humanize %}
+
+<div class="row g-2 mb-3">
+  <div class="col-12 col-md-6">
+    <input
+      hx-get="{% url 'inventory:product_search' %}"
+      hx-trigger="keyup changed delay:1000ms"
+      hx-target="#product-list-container"
+      name="q"
+      value="{{ current_q }}"
+      class="form-control"
+      placeholder="Buscar produto…"
+    />
+  </div>
+  <div class="col-12 col-md-6">
+    <select
+      hx-get="{% url 'inventory:product_search' %}"
+      hx-trigger="change"
+      hx-target="#product-list-container"
+      name="supplier"
+      class="form-select"
+    >
+      <option value="">Todos Fornecedores</option>
+      {% for sup in suppliers %}
+        <option
+          value="{{ sup.id }}"
+          {% if sup.id|stringformat:"s" == current_supplier %}selected{% endif %}
+        >{{ sup.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<div class="row g-2 mb-4">
+  <div class="col-12 col-md-6">
+    <select
+      hx-get="{% url 'inventory:product_search' %}"
+      hx-trigger="change"
+      hx-target="#product-list-container"
+      name="sort_by"
+      class="form-select"
+    >
+      <option value="name"  {% if current_sort_by == 'name'  %}selected{% endif %}>Nome</option>
+      <option value="price" {% if current_sort_by == 'price' %}selected{% endif %}>Preço</option>
+    </select>
+  </div>
+  <div class="col-12 col-md-6">
+    <div class="btn-group w-100 h-100" role="group" aria-label="Direção de ordenação">
+      <button
+        type="button"
+        class="btn btn-outline-secondary {% if current_sort_dir == 'asc' %}active{% endif %}"
+        hx-get="{% url 'inventory:product_search' %}"
+        hx-trigger="click"
+        hx-target="#product-list-container"
+        hx-include="input[name=q], select[name=supplier], select[name=sort_by]"
+        hx-vals='{"sort_dir":"asc"}'
+      >
+        <i class="bi bi-arrow-up"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-secondary {% if current_sort_dir == 'desc' %}active{% endif %}"
+        hx-get="{% url 'inventory:product_search' %}"
+        hx-trigger="click"
+        hx-target="#product-list-container"
+        hx-include="input[name=q], select[name=supplier], select[name=sort_by]"
+        hx-vals='{"sort_dir":"desc"}'
+      >
+        <i class="bi bi-arrow-down"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Preço</th>
+      <th>Fornecedores</th>
+      <th class="text-end">Ação</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in page_obj %}
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>R$ {{ product.price|floatformat:2|intcomma }}</td>
+        <td>
+          {% for sup in product.suppliers.all %}
+            <span class="badge bg-secondary">{{ sup.name }}</span>
+          {% empty %}
+            <span class="text-muted">—</span>
+          {% endfor %}
+        </td>
+        <td class="text-end">
+          <button
+            type="button"
+            class="btn btn-sm btn-success"
+            hx-post="{% url 'sales:add_item' product.id %}"
+            hx-target="#sale-items-table"
+            hx-swap="beforeend"
+            hx-indicator=".htmx-indicator"
+          >Adicionar</button>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<nav>
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a
+          class="page-link"
+          hx-get="{% url 'inventory:product_search' %}?page={{ page_obj.previous_page_number }}"
+          hx-include="input, select"
+          hx-target="#product-list-container"
+        >Anterior</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+    {% endif %}
+
+    <li class="page-item disabled">
+      <span class="page-link">{{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+    </li>
+
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a
+          class="page-link"
+          hx-get="{% url 'inventory:product_search' %}?page={{ page_obj.next_page_number }}"
+          hx-include="input, select"
+          hx-target="#product-list-container"
+        >Próxima</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Próxima</span></li>
+    {% endif %}
+  </ul>
+</nav>

@@ -1,0 +1,59 @@
+{% load humanize bootstrap5 %}
+
+<div class="row g-4">
+  <div class="col-md-7">
+    <div class="card h-100">
+      <div class="card-header">
+        <h5>Itens da Venda</h5>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          {% for item in cart_items %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                {{ item.product.name }}
+                <br>
+                <small class="text-muted">Qtd: {{ item.quantity }} x R$ {{ item.product.price|intcomma }}</small>
+              </div>
+              <span class="fw-bold">R$ {{ item.total_price|floatformat:2|intcomma }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card-footer fs-5 d-flex justify-content-between">
+        <strong>Subtotal:</strong>
+        <strong>R$ {{ subtotal|intcomma }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-5">
+    <div class="card h-100">
+      <div class="card-header">
+        <h5>Endereço de Entrega</h5>
+      </div>
+      <div class="card-body">
+        <p>
+          <strong>CEP:</strong> {{ form.cep.value }} <br>
+          <strong>Rua:</strong> {{ form.street.value }}, {{ form.number.value|default_if_none:'' }} <br>
+          <strong>Bairro:</strong> {{ form.neighborhood.value }} <br>
+          <strong>Cidade/UF:</strong> {{ form.city.value }}/{{ form.state.value }} <br>
+          <strong>Complemento:</strong> {{ form.complement.value|default_if_none:'N/A' }}
+        </p>
+
+        <input type="hidden" name="cep" value="{{ form.cep.value|default_if_none:'' }}">
+        <input type="hidden" name="street" value="{{ form.street.value|default_if_none:'' }}">
+        <input type="hidden" name="neighborhood" value="{{ form.neighborhood.value|default_if_none:'' }}">
+        <input type="hidden" name="city" value="{{ form.city.value|default_if_none:'' }}">
+        <input type="hidden" name="state" value="{{ form.state.value|default_if_none:'' }}">
+        <input type="hidden" name="number" value="{{ form.number.value|default_if_none:'' }}">
+        <input type="hidden" name="complement" value="{{ form.complement.value|default_if_none:'' }}">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="text-center mt-4">
+  <p class="text-muted">Confira todos os dados antes de prosseguir.</p>
+</div>

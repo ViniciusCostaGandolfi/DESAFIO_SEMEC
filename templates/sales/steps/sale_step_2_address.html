@@ -1,0 +1,64 @@
+{% extends 'sales/steps/sale_step_base.html' %}
+{% load bootstrap5 %}
+
+{% block step_number %}
+  2
+{% endblock %}
+{% block step_title %}
+  Endereço
+{% endblock %}
+{% block total_steps %}
+  3
+{% endblock %}
+
+{% block prev_url %}
+  {% url 'sales:sale_step_1_products' %}
+{% endblock %}
+{% block next_url %}
+  {% url 'sales:sale_step_3_summary' %}
+{% endblock %}
+{% block next_label %}
+  Próximo: Resumo Final
+{% endblock %}
+
+{% block step_body %}
+  <form id="address-form" method="POST" action="{% url 'sales:sale_step_2_address' %}">
+    {% csrf_token %}
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4>Endereço de Entrega</h4>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <input type="text" name="cep" value="{{ form.cep.value|default_if_none:'' }}" placeholder="CEP" class="form-control" hx-post="{% url 'sales:check_cep' %}" hx-trigger="blur changed delay:500ms" hx-include="[name='cep']" hx-target="#address-fields" hx-indicator=".cep-indicator" />
+          </div>
+          <div class="col-md-2 align-self-center mt-2">
+            <span class="cep-indicator htmx-indicator">Buscando...</span>
+          </div>
+        </div>
+
+        <div id="address-fields" class="mt-4">
+          {% include 'sales/partials/address_fields.html' %}
+        </div>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('address-form')
+      const nextBtn = document.querySelector('.d-flex .btn-primary')
+      if (form && nextBtn) {
+        nextBtn.addEventListener('click', function (e) {
+          e.preventDefault()
+          form.submit()
+        })
+      }
+    })
+  </script>
+{% endblock %}
