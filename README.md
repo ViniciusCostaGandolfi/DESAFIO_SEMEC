@@ -17,7 +17,7 @@ Este sistema de vendas permite:
 > **Plus:** testes unitários automatizados, linting e tipagem estática.
 
 
-OBS1: Estou estudando mais sobre arquitetura limpa, e pro mais que eu pensasse como usar alguns conceitos do SOLID nesse projeto, o Django já tem padrões muito bem definidos, e forçar outras organizações de pastas apenas complicaria os padrões da própria comunidade.
+OBS1: Estou estudando mais sobre arquitetura limpa, e por mais que eu pensasse como usar alguns conceitos do SOLID nesse projeto, o Django já tem padrões muito bem definidos, e forçar outras organizações de pastas apenas complicaria os padrões da própria comunidade.
 
 
 OBS2: Deu tempo apenas de testes unitários, mas com mais recursos eu poderia adicionar testes de integração, E2E, ou pelo menos alguns testes com banco de dados em memória pra simular alguns cenários.
