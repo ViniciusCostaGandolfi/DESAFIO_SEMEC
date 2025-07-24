@@ -1,156 +1,145 @@
-**Portal Stream - Sistema de Vendas**
+Com certeza\! Mantive a essência das suas excelentes observações técnicas, mas ajustei a linguagem para um tom mais profissional e direto, ideal para a avaliação de um recrutador.
 
-**Teste de Aptidão para Desenvolvedor – SEMEQ**
+Aqui está a versão reescrita do seu README:
 
+-----
 
-## Descrição
+# **Portal Stream: Sistema de Vendas**
 
-Este sistema de vendas permite:
+### *Projeto desenvolvido para o Teste de Aptidão da SEMEQ*
 
-* Registrar vendas com data, endereço de entrega (consultado via API ViaCEP), produtos e comprador.
-* Consultar histórico de compras.
-* Buscar produtos por nome na tela de consulta.
-* Adicionar múltiplos fornecedores a uma venda.
-* Atualização dinâmica do subtotal via HTMX, melhorando a experiência do usuário.
-* Layout responsivo construído com Bootstrap.
+## Visão Geral
 
-> **Plus:** testes unitários automatizados, linting e tipagem estática.
+O Portal Stream é uma aplicação web completa para gestão de vendas, desenvolvida como parte de um processo de avaliação técnica. O sistema demonstra a implementação de funcionalidades essenciais de um e-commerce, com foco em boas práticas de desenvolvimento, qualidade de código e uma arquitetura robusta.
 
+### Funcionalidades Principais
 
-OBS1: Estou estudando mais sobre arquitetura limpa, e por mais que eu pensasse como usar alguns conceitos do SOLID nesse projeto, o Django já tem padrões muito bem definidos, e forçar outras organizações de pastas apenas complicaria os padrões da própria comunidade.
+  * **Registro de Vendas:** Permite criar vendas detalhadas, associando produtos, comprador, data e endereço de entrega.
+  * **Consulta de Endereço via API:** Integração com a API **ViaCEP** para preenchimento automático do endereço a partir do CEP.
+  * **Histórico de Compras:** Interface para que os usuários consultem suas compras anteriores.
+  * **Busca de Produtos:** Funcionalidade de busca dinâmica na tela de consulta.
+  * **Múltiplos Fornecedores:** Flexibilidade para associar diversos fornecedores a uma mesma venda.
+  * **Experiência de Usuário Aprimorada:** O subtotal da venda é atualizado dinamicamente via **HTMX**, eliminando a necessidade de recarregar a página.
+  * **Design Responsivo:** Layout construído com **Bootstrap 5**, garantindo usabilidade em diferentes dispositivos.
 
+### Qualidade de Código e Testes
 
-OBS2: Deu tempo apenas de testes unitários, mas com mais recursos eu poderia adicionar testes de integração, E2E, ou pelo menos alguns testes com banco de dados em memória pra simular alguns cenários.
+  * **Testes Unitários:** Cobertura de testes para as principais regras de negócio.
+  * **Linting e Formatação:** O **Ruff** é utilizado para garantir um padrão de código consistente e limpo.
+  * **Tipagem Estática:** O **MyPy** é aplicado para aumentar a robustez e prevenir erros de tipo.
 
-OBS3: Me parece estranho o desafio pedir para adicionar mais um banco de dados como MongoDB no meio do projeto, isso causaria consitencia eventual dos dados em um app real, além de adicionar latencia, se for a intenção de criar uma "cópia" de um produto na hora de de salvar como SaleItem, uma opção seria utilizar o próprio JSONB do Postgres.
+-----
 
+## Notas de Arquitetura e Design
 
----
+Durante o desenvolvimento, algumas decisões importantes foram tomadas para garantir a qualidade e a manutenibilidade do projeto:
 
-## Tecnologias Utilizadas
+1.  **Arquitetura e Django:** Embora conceitos de Arquitetura Limpa tenham sido considerados, optei por seguir os padrões de projeto consolidados do Django. Esta abordagem garante a manutenibilidade e facilita a colaboração, alinhando-se às melhores práticas da comunidade Django e evitando complexidade desnecessária na estrutura de pastas.
 
-* **Backend:** Python 3.13, Django, peguei python3.13 apenas pq é uma das últimas versões disponíveis
-* **Frontend:** HTML5, Bootstrap 5, HTMX, sómente o HTMX que adicionei em relação da stack sugerida, pois ele complementa bem para um SITE FULLSTACK
-* **Banco de dados:** PostgreSQL (via Docker Compose)
-* **Contêineres:** Docker, Docker Compose, docker ajuda tanto para utilizar versões de banco de dados diferentes, reprodutividade de ambiente que hoje em dia é imprencindível!
-* **Padrão de Código:** Ruff (linting), MyPy (type checking), é dificil padronizar o tipo de código em projetos Python, eu atualmente estou gostando gastante do RUFF, ele padroniza relatiamente fácil os ambientes dos DEVS
-* **Testes:** Django TestCase (unidades), cobertura de testes
-* **Dependencias:** O padrão da comunidade Python é suar um requirements.txt, entretando ja tive problemas em deploys de um app python por conta das dependencias de dependencias, o pip necessita de um lock file, assim como existe no node, logo to usando a uv, onde guardamos o requirements.in coomo nossas dependencias, e o uv gera o requirements.txt já com os locks das dependencias de dependencias.
+2.  **Estratégia de Testes:** A estratégia atual foca em testes unitários para validar a lógica de negócio principal. Com mais tempo e recursos, o escopo seria expandido para incluir testes de integração e E2E (End-to-End), utilizando um banco de dados em memória para simular cenários complexos e validar o fluxo completo da aplicação.
 
-uv pip compile requirements.in -o requirements.txt
+3.  **Análise sobre a Escolha do Banco de Dados:** Foi feita uma análise crítica sobre a sugestão de integrar um banco de dados NoSQL como o MongoDB. Para o caso de uso de armazenar um "snapshot" do produto no momento da venda, a introdução de um segundo banco de dados poderia gerar problemas de consistência eventual e aumentar a latência. Uma solução mais robusta e integrada seria utilizar o tipo de dado `JSONB` nativo do PostgreSQL. Essa abordagem mantém a consistência transacional e a simplicidade da arquitetura de dados.
 
+-----
 
----
+## Stack Tecnológico
 
-## Requisitos
+| Categoria | Tecnologia | Justificativa |
+| :--- | :--- | :--- |
+| **Backend** | Python 3.13, Django | Base sólida e produtiva para o desenvolvimento web, utilizando uma versão recente da linguagem. |
+| **Frontend** | HTML5, Bootstrap 5, HTMX | Interface reativa e responsiva. HTMX foi adicionado para criar interações dinâmicas sem a complexidade de um framework JavaScript completo. |
+| **Banco de Dados** | PostgreSQL (via Docker) | Um sistema de banco de dados relacional poderoso e confiável, ideal para aplicações transacionais. |
+| **Conteinerização** | Docker, Docker Compose | Garante um ambiente de desenvolvimento consistente e reprodutível, simplificando o setup e o deploy. |
+| **Qualidade de Código** | Ruff, MyPy | Ferramentas modernas e eficientes para linting, formatação e checagem de tipos estática em projetos Python. |
+| **Dependências** | `uv` | Adotado para um gerenciamento de dependências mais seguro, gerando um "lock file" que previne inconsistências entre ambientes. |
 
-* Python 3.13+
-* Docker & Docker Compose
-* Git
+-----
 
----
+## Pré-requisitos
 
-## Instalação e Setup
+  * Python 3.13+
+  * Docker & Docker Compose
+  * Git
 
-1. **Clone o repositório**:
+-----
 
-   ```bash
-   git clone https://github.com/ViniciusCostaGandolfi/DESAFIO_SEMEC.git
-   cd DESAFIO_SEMEC
-   ```
+## Instalação e Execução Local
 
-2. **Configurar ambiente virtual**:
+1.  **Clone o repositório:**
 
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate
-   ```
+    ```bash
+    git clone https://github.com/ViniciusCostaGandolfi/DESAFIO_SEMEC.git
+    cd DESAFIO_SEMEC
+    ```
 
-3. **Instalar dependências Python**:
+2.  **Crie e ative o ambiente virtual:**
 
-   ```bash
-   pip install --upgrade pip
-   pip install -r requirements.txt
-   ```
+    ```bash
+    python -m venv .venv
+    source .venv/bin/activate
+    ```
 
-4. **Iniciar serviços com Docker Compose**:
+3.  **Instale as dependências com `uv`:**
 
-   ```bash
-   docker-compose up -d
-   ```
+    ```bash
+    pip install --upgrade pip uv
+    uv pip install -r requirements.txt
+    ```
 
-   Isso irá subir um container PostgreSQL configurado na porta padrão.
+    *Nota: O `uv` gera o `requirements.txt` a partir do `requirements.in`, garantindo o lock das versões das dependências.*
 
-5. **Aplicar migrations**:
+4.  **Inicie os serviços com Docker Compose:**
 
-   ```bash
-   python manage.py migrate
-   ```
+    ```bash
+    docker-compose up -d
+    ```
 
-6. **Criar usuário administrador (opcional)**:
+    *Este comando irá iniciar o contêiner do PostgreSQL.*
 
-   ```bash
-   python manage.py createsuperuser
-   ```
+5.  **Aplique as migrações do banco de dados:**
 
----
+    ```bash
+    python manage.py migrate
+    ```
 
-## Executando a Aplicação
+6.  **Crie um superusuário (opcional):**
 
-* **Modo de desenvolvimento** (auto-reload + lock Python):
+    ```bash
+    python manage.py createsuperuser
+    ```
 
-  ```bash
-  uvicorn core.asgi:application --reload
-  ```
+7.  **Inicie o servidor de desenvolvimento:**
 
-  Acesse `http://localhost:8000`.
+    ```bash
+    uvicorn core.asgi:application --reload
+    ```
 
----
+    A aplicação estará disponível em `http://localhost:8000`.
+
+-----
 
 ## Testes e Qualidade de Código
 
-* **Executar testes unitários**:
+  * **Executar testes unitários e ver cobertura:**
 
-  ```bash
-  python manage.py test
-  ```
+    ```bash
+    coverage run manage.py test
+    coverage report
+    ```
 
-* **Linting com Ruff**:
+  * **Verificar formatação e lint com Ruff:**
 
-  ```bash
-  ruff check .
-  ```
+    ```bash
+    ruff check .
+    ```
 
-* **Type checking com MyPy**:
+  * **Executar checagem de tipos com MyPy:**
 
-  ```bash
-  mypy .
-  ```
+    ```bash
+    mypy .
+    ```
 
----
-
-## Docker
-
-* **Construir imagem**:
-
-  ```bash
-  docker build -t DESAFIO_SEMEC .
-  ```
-
-* **Executar contêiner**:
-
-  ```bash
-  docker run -p 8000:8000 --env-file .env DESAFIO_SEMEC
-  ```
-
-* **Docker Compose completo**:
-
-  ```bash
-  docker-compose up --build
-  ```
-
----
-
+-----
 
 ## Screenshots
 
