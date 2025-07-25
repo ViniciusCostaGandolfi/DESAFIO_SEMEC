@@ -29,10 +29,9 @@ class AddressFromCep(CepServiceUseCase):
 
                 response.raise_for_status()
 
-                data = await response.json()
+                data = response.json()
 
-                if data.get("erro"):
-                    return None
+
 
                 return Address.model_validate(data)
 
